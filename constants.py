@@ -1,0 +1,9 @@
+USDT = "USDT (TRC20) 💲"
+PERFECT_MONEY = "Perfect Money 💵"
+PAYEER = "Payeer 💳"
+WEB_MONEY = "Web money 💼"
+ZAIN_CASH = "Zaincash - زين كاش 📱"
+FIB = "FIB - مصرف العراق الاول 🏦"
+FASTPAY = "Fastpay - فاست باي 🚀"
+CASH = "Cash - الدفع نقدي 💰"
+K_CARD = "Qi Card - كي كارد الرافدين 💳"
