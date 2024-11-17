@@ -117,6 +117,7 @@ async def step(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     FASTPAY: True,
                     ZAIN_CASH: True,
                     CASH: True,
+                    K_CARD: True,
                 }
             }
         context.user_data["step"] = update.callback_query.data

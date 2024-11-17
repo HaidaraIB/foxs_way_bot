@@ -3,10 +3,75 @@ from telegram.ext import CommandHandler, ContextTypes, Application, Conversation
 from telegram.constants import ParseMode
 from DB import DB
 from custom_filters import Admin
-from common import build_user_keyboard, build_admin_keyboard, request_buttons
+from common import build_user_keyboard, build_admin_keyboard, request_buttons, payment_methods_list
 from constants import *
 
 async def inits(app: Application):
+    if not app.bot_data.get("USD_TO_DINAR", None):
+        app.bot_data["USD_TO_DINAR"] = 1309
+
+    if not app.bot_data.get("DINAR_TO_USD", None):
+        app.bot_data["DINAR_TO_USD"] = 0.00076
+
+    for p in payment_methods_list:
+        if not app.bot_data.get(p, None):
+
+            if p == "Cash - الدفع نقدي 💰":
+                app.bot_data[p] = "اربيل - عينكاوة - شارع المنتزه\n009647511230235"
+                continue
+
+            app.bot_data[p] = 123456
+    
+    if not app.bot_data.get('activate_buy', False):
+        app.bot_data['activate_buy'] = {
+            'first_method': {
+                USDT: True,
+                PERFECT_MONEY: True,
+                PAYEER: True,
+                WEB_MONEY: True,
+                FIB: True,
+                FASTPAY: True,
+                ZAIN_CASH: True,
+                CASH: True,
+                K_CARD: True,
+            },
+            'second_method': {
+                USDT: True,
+                PERFECT_MONEY: True,
+                PAYEER: True,
+                WEB_MONEY: True,
+                FIB: True,
+                FASTPAY: True,
+                ZAIN_CASH: True,
+                CASH: True,
+                K_CARD: True,
+            }
+        }
+        app.bot_data['activate_sell'] = {
+            'first_method': {
+                USDT: True,
+                PERFECT_MONEY: True,
+                PAYEER: True,
+                WEB_MONEY: True,
+                FIB: True,
+                FASTPAY: True,
+                ZAIN_CASH: True,
+                CASH: True,
+                K_CARD: True,
+            },
+            'second_method': {
+                USDT: True,
+                PERFECT_MONEY: True,
+                PAYEER: True,
+                WEB_MONEY: True,
+                FIB: True,
+                FASTPAY: True,
+                ZAIN_CASH: True,
+                CASH: True,
+                K_CARD: True,
+            }
+        }
+
     app.bot_data["restart"] = False
 
 
