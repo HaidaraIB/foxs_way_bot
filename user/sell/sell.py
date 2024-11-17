@@ -1,10 +1,4 @@
-from telegram import (
-    Update,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    Chat,
-)
-
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Chat
 from telegram.ext import (
     ContextTypes,
     ConversationHandler,
@@ -12,9 +6,6 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-
-from custom_filters import User
-
 from common import (
     build_user_keyboard,
     build_first_method_keyboard,
@@ -25,11 +16,7 @@ from common import (
     back_button_user,
     back_to_user_home_page_handler,
 )
-
-from start import (
-    start_command,
-)
-
+from start import start_command
 from constants import *
 from DB import DB
 import os
@@ -97,7 +84,7 @@ async def send_money_step(
 
 
 async def sell(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         res = await user_first_step(update=update)
         if not res:
@@ -120,7 +107,7 @@ async def sell(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def choose_take_sell_method(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         if "back to" not in update.callback_query.data:
             method = update.callback_query.data
             if not context.bot_data["activate_sell"]["first_method"][method]:
@@ -161,7 +148,7 @@ back_to_choose_take_sell_method = sell
 
 
 async def choose_send_sell_method(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         if "back to" not in update.callback_query.data:
             method = update.callback_query.data
             if not context.bot_data["activate_sell"]["second_method"][method]:
@@ -202,7 +189,7 @@ back_to_choose_send_sell_method = choose_take_sell_method
 
 
 async def amount_to_sell(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         if update.callback_query:
             await update.callback_query.answer()
@@ -332,7 +319,7 @@ back_to_amount_to_sell = choose_send_sell_method
 
 
 async def sell_wallet(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         context.user_data["sell_wallet"] = update.message.text
         back_buttons = [
             [
@@ -357,7 +344,7 @@ back_to_sell_wallet = amount_to_sell
 
 
 async def sell_screen_shot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         photo = update.message.photo[-1]
 
@@ -499,7 +486,7 @@ async def sell_screen_shot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def time_sell_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         await update.callback_query.answer()
         serial = int(update.callback_query.data.split(" ")[-1])
         order = DB.get_order(serial=serial, op="sell")

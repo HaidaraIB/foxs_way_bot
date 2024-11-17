@@ -1,11 +1,5 @@
-from telegram import (
-    Update
-)
-
-from telegram.ext.filters import (
-    UpdateFilter,
-)
-
+from telegram import Update
+from telegram.ext.filters import UpdateFilter
 from DB import DB
 
 

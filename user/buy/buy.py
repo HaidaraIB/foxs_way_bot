@@ -1,9 +1,4 @@
-from telegram import (
-    Update,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    Chat,
-)
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Chat
 
 from telegram.ext import (
     ContextTypes,
@@ -12,8 +7,6 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-
-from custom_filters import User
 
 from common import (
     build_user_keyboard,
@@ -26,10 +19,7 @@ from common import (
     back_to_user_home_page_handler,
 )
 
-from start import (
-    start_command,
-)
-
+from start import start_command
 from constants import *
 from DB import DB
 import os
@@ -83,7 +73,7 @@ async def send_money_step(
 
 
 async def buy(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         res = await user_first_step(update=update)
         if not res:
@@ -106,7 +96,7 @@ async def buy(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def choose_send_method(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         if "back to" not in update.callback_query.data:
             method = update.callback_query.data
 
@@ -149,7 +139,7 @@ back_to_choose_send_method = buy
 
 
 async def choose_take_method(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         if "back to" not in update.callback_query.data:
             method = update.callback_query.data
             if not context.bot_data["activate_buy"]["second_method"][method]:
@@ -192,7 +182,7 @@ back_to_choose_take_method = choose_send_method
 
 
 async def amount_to_buy(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         if update.callback_query:
             await update.callback_query.answer()
@@ -322,7 +312,7 @@ back_to_amount_to_buy = choose_take_method
 
 
 async def wallet(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         wal = update.message.text
         back_buttons = [
             [
@@ -353,7 +343,7 @@ async def wallet(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def k_card_buy_wal_num(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         context.user_data["buy_wallet"]["wallet"] = update.message.text
         back_buttons = [
             [
@@ -375,7 +365,7 @@ async def k_card_buy_wal_num(update: Update, context: ContextTypes.DEFAULT_TYPE)
 async def back_to_k_card_buy_wal_num(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         back_buttons = [
             [
                 InlineKeyboardButton(
@@ -395,7 +385,7 @@ back_to_wallet = amount_to_buy
 
 
 async def screen_shot(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         photo = update.message.photo[-1]
 
@@ -547,7 +537,7 @@ async def screen_shot(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def time_order(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
         await update.callback_query.answer()
         serial = int(update.callback_query.data.split(" ")[-1])
         order = DB.get_order(serial=serial, op="buy")

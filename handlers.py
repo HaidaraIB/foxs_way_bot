@@ -1,23 +1,7 @@
-from telegram import (
-    Update,
-)
-
-from telegram.ext import (
-    Application,
-    PicklePersistence,
-    Defaults,
-)
-
-from telegram.constants import (
-    ParseMode,
-)
-
-from start import (
-    start_command,
-    inits,
-)
-
-
+from telegram import Update
+from telegram.ext import Application, PicklePersistence, Defaults
+from telegram.constants import ParseMode
+from start import start_command, admin_command, inits
 from common import (
     back_to_user_home_page_handler,
     back_to_admin_home_page_handler,
@@ -88,18 +72,19 @@ def main():
     app.add_handler(hide_ids_keyboard_handler)
     app.add_handler(activate_methods_handler)
     app.add_handler(find_id_handler)
-    
+
     app.add_handler(refresh_handler)
     app.add_handler(restart_handler)
     app.add_handler(stop_handler)
 
     app.add_handler(start_command)
+    app.add_handler(admin_command)
     app.add_handler(back_to_user_home_page_handler)
     app.add_handler(back_to_admin_home_page_handler)
 
     app.add_error_handler(error_handler)
 
     app.run_polling(allowed_updates=Update.ALL_TYPES)
-    
+
     if app.bot_data["restart"]:
         os.execl(sys.executable, sys.executable, *sys.argv)

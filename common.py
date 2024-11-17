@@ -7,13 +7,7 @@ from telegram import (
     KeyboardButtonRequestUsers,
     KeyboardButton,
 )
-
-from telegram.ext import (
-    ContextTypes,
-    CallbackQueryHandler,
-    ConversationHandler,
-)
-
+from telegram.ext import ContextTypes, CallbackQueryHandler, ConversationHandler
 from telegram.error import TimedOut, NetworkError
 
 import os
@@ -21,16 +15,12 @@ import traceback
 import json
 
 from custom_filters import *
-
-
 from constants import *
-
 from DB import DB
-
 import json
 
 
-def edit_json(name:str, d: dict):
+def edit_json(name: str, d: dict):
     with open(f"jsons/{name}.json", mode="w", encoding="utf-8") as f:
         json.dump(d, f, ensure_ascii=False)
 
@@ -121,7 +111,7 @@ payment_methods_list = [
     FIB,
     FASTPAY,
     CASH,
-    K_CARD
+    K_CARD,
 ]
 
 first_method_list = [
@@ -131,13 +121,7 @@ first_method_list = [
     WEB_MONEY,
 ]
 
-second_method_list = [
-    ZAIN_CASH,
-    FIB,
-    FASTPAY,
-    CASH,
-    K_CARD
-]
+second_method_list = [ZAIN_CASH, FIB, FASTPAY, CASH, K_CARD]
 
 
 def payment_methods_pattern(callback_data: str):
@@ -274,7 +258,7 @@ def build_payment_methods_keyboard(op: str = "", first: str = ""):
 
 
 async def back_to_home_page(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if update.effective_chat.type == Chat.PRIVATE and User().filter(update):
+    if update.effective_chat.type == Chat.PRIVATE:
 
         text = "القائمة الرئيسية🔝"
         keyboard = build_user_keyboard()
