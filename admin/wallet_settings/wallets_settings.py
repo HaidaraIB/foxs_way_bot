@@ -67,13 +67,21 @@ async def choose_method_to_update(update: Update, context: ContextTypes.DEFAULT_
         wallet_or_number = context.user_data["wallet_or_number"]
         method = context.user_data["wallet_settings_method"]
 
+        account = context.bot_data[method]
+
+        if method == K_CARD:
+            try:
+                account = context.bot_data[K_CARD]["account"]
+            except TypeError:
+                context.bot_data[K_CARD] = {
+                    "account": "",
+                    "card": "",
+                }
+                account = context.bot_data[K_CARD]["account"]
+
         text = (
             f"أرسل {wallet_or_number} {method} الجديد\n\n"
-            "القيمة الحالية:\n<code>{}</code>".format(
-                context.bot_data[method]["account"]
-                if method == K_CARD
-                else context.bot_data[method]
-            )
+            "القيمة الحالية:\n<code>{}</code>".format(account)
         )
 
         await update.callback_query.edit_message_text(
@@ -92,9 +100,7 @@ async def new_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
         method = context.user_data["wallet_settings_method"]
 
         if method == K_CARD:
-            context.bot_data[context.user_data["wallet_settings_method"]][
-                "account"
-            ] = update.message.text
+            context.bot_data[K_CARD]["account"] = update.message.text
             back_buttons = [
                 [
                     InlineKeyboardButton(
